@@ -245,7 +245,7 @@ jobs:
       - name: Run e2e tests
         id: e2e-run
         run: |
-          docker-compose -f docker-compose.ci.yml --env-file medium-res.env up --build synpress
+          docker compose -f docker-compose.ci.yml --env-file medium-res.env up --build synpress
           exitcode=$(docker wait synpress-test)
           if [[ $exitcode -eq 0 ]]; then
             echo "status=success" >> $GITHUB_OUTPUT
