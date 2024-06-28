@@ -50,7 +50,7 @@ export const confirmAndApproveCctpWithdrawal = () => {
   cy.log('Approving USDC...')
 }
 
-describe('Withdraw USDC through CCTP', () => {
+test.describe('Withdraw USDC through CCTP', () => {
   // Happy Path
   context('User is on L2 and imports USDC', () => {
     let USDCAmountToSend: number
@@ -81,7 +81,7 @@ describe('Withdraw USDC through CCTP', () => {
       })
     })
 
-    it('should initiate withdrawing USDC to the same address through CCTP successfully', () => {
+    test('should initiate withdrawing USDC to the same address through CCTP successfully', () => {
       context('should show clickable withdraw button', () => {
         cy.findByPlaceholderText('Enter amount').typeRecursively(
           String(USDCAmountToSend)
@@ -113,7 +113,7 @@ describe('Withdraw USDC through CCTP', () => {
       })
     })
 
-    it('should initiate withdrawing USDC to custom destination address through CCTP successfully', () => {
+    test('should initiate withdrawing USDC to custom destination address through CCTP successfully', () => {
       context('should show clickable withdraw button', () => {
         cy.findByPlaceholderText('Enter amount').typeRecursively(
           String(USDCAmountToSend)

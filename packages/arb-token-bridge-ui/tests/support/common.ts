@@ -6,6 +6,7 @@ import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import { BigNumber } from 'ethers'
 import { MultiCaller } from '@arbitrum/sdk'
 import { MULTICALL_TESTNET_ADDRESS } from '../../src/constants'
+import { Page, expect } from '@playwright/test'
 
 export type NetworkType = 'L1' | 'L2'
 export type NetworkName =
@@ -77,24 +78,25 @@ export const invalidTokenAddress = '0x0000000000000000000000000000000000000000'
 
 export const zeroToLessThanOneETH = /0(\.\d+)*( ETH)/
 
-export const importTokenThroughUI = (address: string) => {
+export async function importTokenThroughUI(
+  page: Page,
+  address: string
+): Promise<void> {
   // Click on the ETH dropdown (Select token button)
-  cy.findByRole('button', { name: 'Select Token' })
-    .should('be.visible')
-    .should('have.text', 'ETH')
-    .click()
+  const selectTokenButton = page.getByRole('button', { name: 'Select Token' })
+  await expect(selectTokenButton).toBeVisible()
+  await expect(selectTokenButton).toHaveText('ETH')
+  await selectTokenButton.click()
 
-  // open the Select Token popup
-  return cy
-    .findByPlaceholderText(/Search by token name/i)
-    .should('be.visible')
-    .typeRecursively(address)
-    .then(() => {
-      // Click on the Add new token button
-      cy.findByRole('button', { name: 'Add New Token' })
-        .should('be.visible')
-        .click()
-    })
+  // Find and fill the search input in the Select Token popup
+  const searchInput = page.getByPlaceholder(/Search by token name/i)
+  await expect(searchInput).toBeVisible()
+  await searchInput.fill(address)
+
+  // Click on the Add new token button
+  const addNewTokenButton = page.getByRole('button', { name: 'Add New Token' })
+  await expect(addNewTokenButton).toBeVisible()
+  await addNewTokenButton.click()
 }
 
 export async function getInitialETHBalance(

@@ -5,7 +5,7 @@
 import { zeroToLessThanOneETH } from '../../support/common'
 import { formatAmount } from '../../../src/util/NumberUtils'
 
-describe('Withdraw ETH', () => {
+test.describe('Withdraw ETH', () => {
   const ETHToWithdraw = 0.0001
 
   const typeAmountIntoInput = () => {
@@ -16,7 +16,7 @@ describe('Withdraw ETH', () => {
 
   // Happy Path
   context('user has some ETH and is on L2', () => {
-    it('should show form fields correctly', () => {
+    test('should show form fields correctly', () => {
       cy.login({ networkType: 'L2' })
       cy.findByRole('button', { name: /From: Arbitrum/i }).should('be.visible')
       cy.findByRole('button', { name: /To: Ethereum/i }).should('be.visible')
@@ -29,7 +29,7 @@ describe('Withdraw ETH', () => {
     })
 
     context("bridge amount is lower than user's L2 ETH balance value", () => {
-      it('should show gas estimations', () => {
+      test('should show gas estimations', () => {
         cy.login({ networkType: 'L2' })
         typeAmountIntoInput()
           .should('have.value', String(ETHToWithdraw))
@@ -51,7 +51,7 @@ describe('Withdraw ETH', () => {
           })
       })
 
-      it('should show withdrawal confirmation and withdraw', () => {
+      test('should show withdrawal confirmation and withdraw', () => {
         cy.login({ networkType: 'L2' })
         typeAmountIntoInput()
           .should('have.value', String(ETHToWithdraw))

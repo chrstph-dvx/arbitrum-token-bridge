@@ -3,9 +3,9 @@
  */
 
 import { formatAmount } from '../../../src/util/NumberUtils'
-import { getInitialETHBalance } from './../../support/common'
+import { getInitialETHBalance } from '../../support/common'
 
-describe('Login Account', () => {
+test.describe('Login Account', () => {
   let l1ETHbal
   let l2ETHbal
 
@@ -18,8 +18,8 @@ describe('Login Account', () => {
     )
   })
 
-  it('should show connect wallet if not logged in', () => {
-    cy.visit('/')
+  test('should show connect wallet if not logged in', () => {
+    cy.vistest('/')
     cy.findByText(/Agree to Terms and Continue/i)
       .should('be.visible')
       .click()
@@ -27,7 +27,7 @@ describe('Login Account', () => {
     cy.findByText('MetaMask').should('be.visible')
   })
 
-  it('should connect wallet using MetaMask and display L1 and L2 balances', () => {
+  test('should connect wallet using MetaMask and display L1 and L2 balances', () => {
     cy.login({ networkType: 'L1' })
     // Balance: is in a different element so we check for siblings
     cy.findByText(l1ETHbal)
