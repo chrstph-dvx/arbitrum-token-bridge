@@ -1,6 +1,6 @@
-test.describe('Switch Networks', () => {
+describe('Switch Networks', () => {
   context('User is on test network L1', () => {
-    test('should show L1 and L2 chains correctly', () => {
+    it('should show L1 and L2 chains correctly', () => {
       cy.login({ networkType: 'L1' })
       cy.findByRole('button', { name: /From: Ethereum/i }).should('be.visible')
       cy.findByRole('button', { name: /To: Arbitrum/i }).should('be.visible')
@@ -9,7 +9,7 @@ test.describe('Switch Networks', () => {
     context(
       'User is connected to Ethereum, source chain is Ethereum and destination chain is Arbitrum',
       () => {
-        test('should switch "from: Ethereum" to "from: Arbitrum" successfully', () => {
+        it('should switch "from: Ethereum" to "from: Arbitrum" successfully', () => {
           cy.login({
             networkType: 'L1'
           })

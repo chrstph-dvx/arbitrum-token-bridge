@@ -13,7 +13,7 @@ import { shortenAddress } from '../../../src/util/CommonUtils'
 
 const moreThanZeroBalance = /0(\.\d+)/
 
-test.describe('Deposit ERC20 Token', () => {
+describe('Deposit ERC20 Token', () => {
   // when all of our tests need to run in a logged-in state
   // we have to make sure we preserve a healthy LocalStorage state
   // because it is cleared between each `it` cypress test
@@ -32,7 +32,7 @@ test.describe('Deposit ERC20 Token', () => {
       }).then(val => (l1ERC20bal = formatAmount(val)))
     })
 
-    test('should show L1 and L2 chains, and ETH correctly', () => {
+    it('should show L1 and L2 chains, and ETH correctly', () => {
       cy.login({ networkType: 'L1' })
       cy.findByRole('button', { name: /From: Ethereum/i }).should('be.visible')
       cy.findByRole('button', { name: /To: Arbitrum/i }).should('be.visible')
@@ -41,7 +41,7 @@ test.describe('Deposit ERC20 Token', () => {
         .should('have.text', 'ETH')
     })
 
-    test('should deposit ERC-20 successfully to the same address', () => {
+    it('should deposit ERC-20 successfully to the same address', () => {
       const ERC20AmountToSend = Number((Math.random() * 0.001).toFixed(5)) // randomize the amount to be sure that previous transactions are not checked in e2e
 
       cy.login({ networkType: 'L1' })
@@ -102,7 +102,7 @@ test.describe('Deposit ERC20 Token', () => {
       })
     })
 
-    test('should deposit ERC-20 to custom destination address successfully', () => {
+    it('should deposit ERC-20 to custom destination address successfully', () => {
       const ERC20AmountToSend = Number((Math.random() * 0.001).toFixed(5)) // randomize the amount to be sure that previous transactions are not checked in e2e
 
       cy.login({ networkType: 'L1' })

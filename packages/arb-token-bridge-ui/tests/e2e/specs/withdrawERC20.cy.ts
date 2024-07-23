@@ -11,7 +11,7 @@ import {
   zeroToLessThanOneETH
 } from '../../support/common'
 
-test.describe('Withdraw ERC20 Token', () => {
+describe('Withdraw ERC20 Token', () => {
   // when all of our tests need to run in a logged-in state
   // we have to make sure we preserve a healthy LocalStorage state
   // because it is cleared between each `it` cypress test
@@ -35,7 +35,7 @@ test.describe('Withdraw ERC20 Token', () => {
       )
     })
 
-    test('should show form fields correctly', () => {
+    it('should show form fields correctly', () => {
       cy.login({ networkType: 'L2' })
       cy.findByRole('button', { name: /From: Arbitrum/i }).should('be.visible')
       cy.findByRole('button', { name: /To: Ethereum/i }).should('be.visible')
@@ -51,7 +51,7 @@ test.describe('Withdraw ERC20 Token', () => {
         .should('have.text', 'ETH')
     })
 
-    test('should withdraw ERC-20 to the same address successfully', () => {
+    it('should withdraw ERC-20 to the same address successfully', () => {
       const ERC20AmountToSend = Number((Math.random() * 0.001).toFixed(5)) // randomize the amount to be sure that previous transactions are not checked in e2e
 
       cy.login({ networkType: 'L2' })
@@ -131,7 +131,7 @@ test.describe('Withdraw ERC20 Token', () => {
       })
     })
 
-    test('should withdraw ERC-20 to custom destination address successfully', () => {
+    it('should withdraw ERC-20 to custom destination address successfully', () => {
       const ERC20AmountToSend = Number((Math.random() * 0.001).toFixed(5)) // randomize the amount to be sure that previous transactions are not checked in e2e
 
       cy.login({ networkType: 'L2' })

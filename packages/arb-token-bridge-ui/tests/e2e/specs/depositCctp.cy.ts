@@ -1,159 +1,197 @@
-import { test, expect } from '@playwright/test'
-import { synpressPlugins } from '@synthetixio/synpress'
+/**
+ * When user wants to bridge USDC through CCTP from L1 to L2
+ */
+
 import { formatAmount } from '../../../src/util/NumberUtils'
 import { zeroToLessThanOneETH } from '../../support/common'
 import { CommonAddress } from '../../../src/util/CommonAddressUtils'
 import { shortenAddress } from '../../../src/util/CommonUtils'
 
-// Helper function for CCTP deposit confirmation
-async function confirmAndApproveCctpDeposit(page) {
-  await expect(
-    page.getByRole('tab', { name: 'Native USDC', selected: true })
-  ).toBeVisible()
-  await expect(
-    page.getByRole('tab', {
-      name: 'Native USDC (Third Party Bridge)',
-      selected: false
-    })
-  ).toBeVisible()
-  await expect(
-    page.getByRole('tab', { name: 'Wrapped USDC (USDC.e)', selected: false })
-  ).toBeVisible()
+// common function for this cctp deposit
+const confirmAndApproveCctpDeposit = () => {
+  cy.findByRole('tab', {
+    name: 'Native USDC',
+    selected: true
+  }).should('exist')
+  cy.findByRole('tab', {
+    name: 'Native USDC (Third Party Bridge)',
+    selected: false
+  }).should('exist')
+  cy.findByRole('tab', {
+    name: 'Wrapped USDC (USDC.e)',
+    selected: false
+  }).should('exist')
 
-  const continueButton = page.getByRole('button', { name: /Continue/i })
-  await expect(continueButton).toBeVisible()
-  await expect(continueButton).toBeDisabled()
+  // By default, confirm button is disabled
+  cy.findByRole('button', {
+    name: /Continue/i
+  })
+    .should('be.visible')
+    .should('be.disabled')
 
-  await page
-    .getByRole('switch', { name: /I understand that I'll have to send/i })
+  // Checkbox
+  cy.findByRole('switch', {
+    name: /I understand that I'll have to send/i
+  })
+    .should('be.visible')
     .click()
-  await page
-    .getByRole('switch', { name: /I understand that it will take/i })
+  cy.findByRole('switch', {
+    name: /I understand that it will take/i
+  })
+    .should('be.visible')
     .click()
-  await page.getByRole('switch', { name: /I understand USDC.e/i }).click()
 
-  await expect(continueButton).toBeEnabled()
-  await continueButton.click()
+  cy.findByRole('switch', {
+    name: /I understand USDC.e/i
+  })
+    .should('be.visible')
+    .click()
 
-  await page.getByText(/I understand that I have to/).click()
-  await page.getByRole('button', { name: /Pay approval fee of/ }).click()
-  console.log('Approving USDC...')
+  cy.findByRole('button', {
+    name: /Continue/i
+  })
+    .should('be.visible')
+    .should('be.enabled')
+    .click()
+
+  cy.findByText(/I understand that I have to/).click()
+  cy.findByRole('button', {
+    name: /Pay approval fee of/
+  }).click()
+  cy.log('Approving USDC...')
 }
 
-test.describe('Deposit USDC through CCTP', () => {
-  let USDCAmountToSend = 0
+describe('Deposit USDC through CCTP', () => {
+  // Happy Path
+  context('User has some USDC and is on L1', () => {
+    let USDCAmountToSend: number = 0
 
-  test.beforeEach(async ({ page }) => {
-    await synpressPlugins.initialize(page)
-    await synpressPlugins.metamask.login()
+    // log in to metamask before deposit
+    beforeEach(() => {
+      USDCAmountToSend = Number((Math.random() * 0.001).toFixed(6)) // randomize the amount to be sure that previous transactions are not checked in e2e
 
-    USDCAmountToSend = Number((Math.random() * 0.001).toFixed(6))
+      cy.fundUserWalletEth('L1')
+      cy.fundUserUsdcTestnet('L1')
+      cy.resetCctpAllowance('L1')
 
-    // TODO: Implement these functions for Playwright
-    // await fundUserWalletEth('L1');
-    // await fundUserUsdcTestnet('L1');
-    // await resetCctpAllowance('L1');
+      /// common code before all tests
+      cy.login({ networkType: 'L1', networkName: 'sepolia' })
+      context('should show L1 and L2 chains, and USD correctly', () => {
+        cy.findByRole('button', { name: /From: Sepolia/i }).should('be.visible')
+        cy.findByRole('button', { name: /To: Arbitrum Sepolia/i }).should(
+          'be.visible'
+        )
+        cy.findByRole('button', { name: 'Select Token' })
+          .should('be.visible')
+          .should('have.text', 'ETH')
+      })
 
-    await page.goto('/') // Assuming this is your app's base URL
+      cy.searchAndSelectToken({
+        tokenName: 'USDC',
+        tokenAddress: CommonAddress.Sepolia.USDC
+      })
 
-    await expect(
-      page.getByRole('button', { name: /From: Sepolia/i })
-    ).toBeVisible()
-    await expect(
-      page.getByRole('button', { name: /To: Arbitrum Sepolia/i })
-    ).toBeVisible()
-    const selectTokenButton = page.getByRole('button', { name: 'Select Token' })
-    await expect(selectTokenButton).toBeVisible()
-    await expect(selectTokenButton).toHaveText('ETH')
-
-    // TODO: Implement searchAndSelectToken for Playwright
-    // await searchAndSelectToken(page, {
-    //   tokenName: 'USDC',
-    //   tokenAddress: CommonAddress.Sepolia.USDC
-    // });
-
-    await page.getByPlaceholder('Enter amount').fill(String(USDCAmountToSend))
-    await expect(
-      page
-        .getByText(/You will pay in gas fees:/i)
-        .locator('..')
-        .getByText(zeroToLessThanOneETH)
-    ).toBeVisible()
-    await expect(
-      page
-        .getByText(/gas fee$/)
-        .first()
-        .locator('../..')
-        .getByText(zeroToLessThanOneETH)
-    ).toBeVisible()
-    await expect(
-      page.getByText(/You'll have to pay [\w\s]+ gas fee upon claiming./i)
-    ).toBeVisible()
-  })
-
-  test('should initiate depositing USDC to the same address through CCTP successfully', async ({
-    page
-  }) => {
-    const depositButton = page.getByRole('button', {
-      name: /Move funds to Arbitrum Sepolia/i
+      context('should show summary', () => {
+        cy.findByPlaceholderText('Enter amount')
+          .typeRecursively(String(USDCAmountToSend))
+          .then(() => {
+            cy.findByText(/You will pay in gas fees:/i)
+              .siblings()
+              .contains(zeroToLessThanOneETH)
+              .should('be.visible')
+            cy.findAllByText(/gas fee$/)
+              .first()
+              .parent()
+              .siblings()
+              .contains(zeroToLessThanOneETH)
+              .should('be.visible')
+            cy.findByText(
+              /You'll have to pay [\w\s]+ gas fee upon claiming./i
+            ).should('be.visible')
+          })
+      })
     })
-    await depositButton.scrollIntoViewIfNeeded()
-    await expect(depositButton).toBeVisible()
-    await expect(depositButton).toBeEnabled()
-    await depositButton.click()
 
-    await confirmAndApproveCctpDeposit(page)
-    await synpressPlugins.metamask.confirmPermissionToSpend(
-      USDCAmountToSend.toString()
-    )
+    it('should initiate depositing USDC to the same address through CCTP successfully', () => {
+      context('should show clickable deposit button', () => {
+        cy.findByRole('button', {
+          name: /Move funds to Arbitrum Sepolia/i
+        })
+          .scrollIntoView()
+          .should('be.visible')
+          .should('be.enabled')
+          .click()
+      })
 
-    await page.waitForTimeout(40000) // TODO: Replace with a more robust waiting mechanism
-    await synpressPlugins.metamask.confirmTransaction()
-
-    await expect(page.getByText('Pending transactions')).toBeVisible()
-    await expect(
-      page.getByText(formatAmount(USDCAmountToSend, { symbol: 'USDC' }))
-    ).toBeVisible()
-  })
-
-  test('should initiate depositing USDC to custom destination address through CCTP successfully', async ({
-    page
-  }) => {
-    // TODO: Implement fillCustomDestinationAddress for Playwright
-    // await fillCustomDestinationAddress(page);
-
-    const depositButton = page.getByRole('button', {
-      name: /Move funds to Arbitrum Sepolia/i
+      context('Should display CCTP modal', () => {
+        confirmAndApproveCctpDeposit()
+        cy.confirmMetamaskPermissionToSpend(USDCAmountToSend.toString()).then(
+          () => {
+            // eslint-disable-next-line
+            cy.wait(40_000)
+            cy.confirmMetamaskTransaction().then(() => {
+              cy.findByText('Pending transactions').should('be.visible') // tx history should be opened
+              cy.findByText(
+                `${formatAmount(USDCAmountToSend, {
+                  symbol: 'USDC'
+                })}`
+              ).should('be.visible')
+            })
+          }
+        )
+      })
     })
-    await depositButton.scrollIntoViewIfNeeded()
-    await depositButton.click()
 
-    await confirmAndApproveCctpDeposit(page)
-    await synpressPlugins.metamask.confirmPermissionToSpend(
-      USDCAmountToSend.toString()
-    )
+    it('should initiate depositing USDC to custom destination address through CCTP successfully', () => {
+      context('should fill custom destination address successfully', () => {
+        cy.fillCustomDestinationAddress()
+      })
 
-    await page.waitForTimeout(40000) // TODO: Replace with a more robust waiting mechanism
-    await synpressPlugins.metamask.confirmTransaction()
+      context('should click deposit successfully', () => {
+        cy.findByRole('button', {
+          name: /Move funds to Arbitrum Sepolia/i
+        })
+          .scrollIntoView()
+          .click()
+      })
 
-    await expect(page.getByText('Pending transactions')).toBeVisible()
-    await expect(
-      page.getByText(formatAmount(USDCAmountToSend, { symbol: 'USDC' }))
-    ).toBeVisible()
+      context('Should display CCTP modal', () => {
+        confirmAndApproveCctpDeposit()
+        cy.confirmMetamaskPermissionToSpend(USDCAmountToSend.toString()).then(
+          () => {
+            // eslint-disable-next-line
+            cy.wait(40_000)
+            cy.confirmMetamaskTransaction().then(() => {
+              cy.findByText('Pending transactions').should('be.visible') // tx history should be opened
+              cy.findByText(
+                `${formatAmount(USDCAmountToSend, {
+                  symbol: 'USDC'
+                })}`
+              ).should('be.visible')
 
-    await page.getByLabel('Transaction details button').first().click()
-    await expect(page.getByText('Transaction details')).toBeVisible()
-    await expect(page.getByText(/CUSTOM ADDRESS/i)).toBeVisible()
+              // open the tx details popup
+              cy.findAllByLabelText('Transaction details button')
+                .first()
+                .click()
+                .then(() => {
+                  cy.findByText('Transaction details').should('be.visible')
 
-    const customAddress = process.env.CUSTOM_DESTINATION_ADDRESS
-    await expect(
-      page.getByLabel(`Custom address: ${shortenAddress(customAddress)}`)
-    ).toBeVisible()
+                  cy.findByText(/CUSTOM ADDRESS/i).should('be.visible')
 
-    await page.getByLabel('Close transaction details popup').click()
-  })
+                  // custom destination label in pending tx history should be visible
+                  cy.findByLabelText(
+                    `Custom address: ${shortenAddress(
+                      Cypress.env('CUSTOM_DESTINATION_ADDRESS')
+                    )}`
+                  ).should('be.visible')
+                })
 
-  test.afterEach(async ({ page }) => {
-    await synpressPlugins.teardown(page)
+              // close popup
+              cy.findByLabelText('Close transaction details popup').click()
+            })
+          }
+        )
+      })
+    })
   })
 })

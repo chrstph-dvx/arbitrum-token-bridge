@@ -1,8 +1,8 @@
 const DEPOSIT_ROW_IDENTIFIER = /deposit-row-*/i
 const CLAIMABLE_ROW_IDENTIFIER = /claimable-row-*/i
 
-test.describe('Transaction History', () => {
-  test('should successfully open and use pending transactions panel', () => {
+describe('Transaction History', () => {
+  it('should successfully open and use pending transactions panel', () => {
     cy.login({
       networkType: 'L1',
       networkName: 'sepolia',
@@ -43,7 +43,7 @@ test.describe('Transaction History', () => {
     })
   })
 
-  test('should successfully open and use settled transactions panel', () => {
+  it('should successfully open and use settled transactions panel', () => {
     cy.login({
       networkType: 'L1',
       networkName: 'sepolia',

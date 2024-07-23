@@ -29,7 +29,7 @@ function mockErc20RedeemDepositTransaction(): Transaction {
   }
 }
 
-test.describe('Redeem ERC20 Deposit', () => {
+describe('Redeem ERC20 Deposit', () => {
   context('User has some ERC20 and is on L1', () => {
     let l2ERC20bal: string
     beforeEach(() => {
@@ -41,7 +41,7 @@ test.describe('Redeem ERC20 Deposit', () => {
       }).then(val => (l2ERC20bal = formatAmount(val)))
     })
 
-    test('should redeem failed retryable successfully', () => {
+    it('should redeem failed retryable successfully', () => {
       cy.login({ networkType: 'L2' })
 
       window.localStorage.setItem(

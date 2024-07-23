@@ -40,13 +40,13 @@ function mockClassicDepositTransaction(
   }
 }
 
-test.describe('Read classic deposit messages', () => {
+describe('Read classic deposit messages', () => {
   beforeEach(() => {
     window.localStorage.clear()
   })
 
   context('User has classic ETH deposit transaction', () => {
-    test('can read successful ETH deposit', () => {
+    it('can read successful ETH deposit', () => {
       // log in to metamask
       cy.login({
         networkType: 'L1',
@@ -83,7 +83,7 @@ test.describe('Read classic deposit messages', () => {
   })
 
   context('User has classic ERC-20 deposit transaction', () => {
-    test('can read successful ERC-20 deposit', () => {
+    it('can read successful ERC-20 deposit', () => {
       // log in to metamask
       cy.login({
         networkType: 'L1',

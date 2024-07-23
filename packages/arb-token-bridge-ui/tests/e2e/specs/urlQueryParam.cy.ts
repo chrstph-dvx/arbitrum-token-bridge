@@ -5,7 +5,7 @@
 import { formatAmount } from '../../../src/util/NumberUtils'
 import { getInitialETHBalance, visitAfterSomeDelay } from '../../support/common'
 
-test.describe('User enters site with query params on URL', () => {
+describe('User enters site with query params on URL', () => {
   let l1ETHbal: number
   // when all of our tests need to run in a logged-in state
   // we have to make sure we preserve a healthy LocalStorage state
@@ -18,7 +18,7 @@ test.describe('User enters site with query params on URL', () => {
     cy.login({ networkType: 'L1' })
   })
 
-  test('should correctly populate amount input from query param', () => {
+  it('should correctly populate amount input from query param', () => {
     // only ETH is supported for now so by default the following tests are assumed to be ETH
     context(
       '?amount=max should set transfer panel amount to maximum amount possible based on balance',
@@ -200,7 +200,7 @@ test.describe('User enters site with query params on URL', () => {
 
       cy.findByPlaceholderText(/Enter amount/i).should('have.value', '0.123')
     })
-    test('?amount=asdfs should not set transfer panel amount', () => {
+    it('?amount=asdfs should not set transfer panel amount', () => {
       visitAfterSomeDelay('/', {
         qs: {
           amount: 'asdfs',

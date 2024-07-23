@@ -10,7 +10,7 @@ import {
 const ERC20TokenAddressL1: string = Cypress.env('ERC20_TOKEN_ADDRESS_L1')
 const ERC20TokenAddressL2: string = Cypress.env('ERC20_TOKEN_ADDRESS_L2')
 
-test.describe('Import token', () => {
+describe('Import token', () => {
   // we use mainnet to test token lists
 
   context('User import token through UI', () => {
@@ -21,7 +21,7 @@ test.describe('Import token', () => {
       )
     })
     context('User uses L1 address', () => {
-      test('should import token through its L1 address', () => {
+      it('should import token through its L1 address', () => {
         cy.login({ networkType: 'L1' })
         importTokenThroughUI(ERC20TokenAddressL1)
 
@@ -42,7 +42,7 @@ test.describe('Import token', () => {
     })
 
     context('User uses L2 address', () => {
-      test('should import token through its L2 address', () => {
+      it('should import token through its L2 address', () => {
         cy.login({ networkType: 'L1' })
         importTokenThroughUI(ERC20TokenAddressL2)
 
@@ -59,7 +59,7 @@ test.describe('Import token', () => {
     })
 
     context('User uses invalid address', () => {
-      test('should display an error message after invalid input', () => {
+      it('should display an error message after invalid input', () => {
         cy.login({ networkType: 'L1' })
         importTokenThroughUI(invalidTokenAddress)
 
@@ -69,7 +69,7 @@ test.describe('Import token', () => {
     })
 
     context('User clicks token list toggle', () => {
-      test('should toggle token list', () => {
+      it('should toggle token list', () => {
         // we don't have the token list locally so we test on mainnet
         cy.login({
           networkType: 'L1',
@@ -96,7 +96,7 @@ test.describe('Import token', () => {
     })
 
     context('User uses token symbol', () => {
-      test('should import token', () => {
+      it('should import token', () => {
         // we don't have the token list locally so we test on mainnet
         cy.login({
           networkType: 'L1',
@@ -142,7 +142,7 @@ test.describe('Import token', () => {
     })
 
     context('Add button is grayed', () => {
-      test('should disable Add button if address is too long/short', () => {
+      it('should disable Add button if address is too long/short', () => {
         const moveToEnd = ERC20TokenAddressL1.substring(
           0,
           ERC20TokenAddressL1.length - 1
@@ -183,7 +183,7 @@ test.describe('Import token', () => {
 
   context('User import token through URL', () => {
     context('User uses L1 address', () => {
-      test('should import token through URL using its L1 address', () => {
+      it('should import token through URL using its L1 address', () => {
         cy.login({
           networkType: 'L1',
           url: '/',
@@ -223,7 +223,7 @@ test.describe('Import token', () => {
     })
 
     context('User uses L2 address', () => {
-      test('should import token through URL using its L2 address', () => {
+      it('should import token through URL using its L2 address', () => {
         cy.login({
           networkType: 'L1',
           url: '/',
@@ -262,7 +262,7 @@ test.describe('Import token', () => {
     })
 
     context('User uses invalid address', () => {
-      test('should display an error message after invalid URL', () => {
+      it('should display an error message after invalid URL', () => {
         cy.login({
           networkType: 'L1',
           url: '/',
