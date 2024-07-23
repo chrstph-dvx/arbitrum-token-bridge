@@ -11,6 +11,7 @@
     "noEmit": true,
     "incremental": true,
     "jsx": "preserve",
+    "strict": true,
     "paths": {
       "@/images/*": ["./public/images/*"],
       "@/icons/*": ["./public/icons/*"],

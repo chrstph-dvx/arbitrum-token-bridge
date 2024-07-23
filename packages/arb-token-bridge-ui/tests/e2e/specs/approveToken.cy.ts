@@ -1,20 +1,29 @@
-import { test, expect } from '@playwright/test'
-import { initialize, metamask, teardown } from '@synthetixio/synpress'
-import {
-  importTokenThroughUI,
-  ERC20TokenName,
-  ERC20TokenSymbol,
-  zeroToLessThanOneETH
-} from '../../support/common'
+import { testWithSynpress, metaMaskFixtures } from '@synthetixio/synpress'
 
-const ERC20TokenAddressL1 = process.env.ERC20_TOKEN_ADDRESS_L1
+import BasicSetup from '../wallet-setup/basic.setup'
+import { expect } from 'playwright/test'
+import { importTokenThroughUI, ERC20TokenName, ERC20TokenSymbol, zeroToLessThanOneETH } from '../../support/common'
+
+const test = testWithSynpress(metaMaskFixtures(BasicSetup))
+const ERC20TokenAddressL1 = process.env.ERC20_TOKEN_ADDRESS_L1 ?? ''
+
+test.describe('Connect wallet', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto('/')
+  })
+
+  test('should connect', async ({ page, metamask }) => {
+    await page.connectWallet(metamask)
+    await expect(true).toBeTruthy()
+  })
+})
 
 test.describe('Approve token and deposit afterwards', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/') // Assuming this is your app's base URL
   })
 
-  test('should approve and deposit ERC-20 token', async ({ page }) => {
+  test('should approve and deposit ERC-20 token', async  ({ page, metamask })=> {
     // Import token through UI
     await importTokenThroughUI(page, ERC20TokenAddressL1)
 
