@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test'
 
 export default defineConfig({
   testDir: './tests/e2e/specs',
-  testMatch: '**/*.cy.ts',
+  testMatch: '**/*.cy.ts', // to match existing tests
   fullyParallel: false,
   retries: process.env.CI ? 2 : 0,
   workers: 1,
