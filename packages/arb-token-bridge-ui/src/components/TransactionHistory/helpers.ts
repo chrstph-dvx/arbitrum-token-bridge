@@ -647,6 +647,6 @@ export function getDestinationNetworkTxId(tx: MergedTransaction) {
   }
 
   return tx.isWithdrawal
-    ? tx.l2ToL1MsgData?.uniqueId.toString()
+    ? tx.childToParentMsgData?.uniqueId.toString()
     : tx.l1ToL2MsgData?.childTxId
 }

@@ -150,7 +150,7 @@ export const transformDeposit = (tx: Transaction): MergedTransaction => {
     blockNum: tx.blockNumber || null,
     tokenAddress: tx.tokenAddress || null,
     l1ToL2MsgData: tx.l1ToL2MsgData,
-    l2ToL1MsgData: tx.l2ToL1MsgData,
+    childToParentMsgData: tx.childToParentMsgData,
     l2ToL3MsgData: tx.l2ToL3MsgData,
     depositStatus: getDepositStatus(tx),
     parentChainId: Number(tx.l1NetworkID),
