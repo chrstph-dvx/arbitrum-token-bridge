@@ -161,7 +161,7 @@ export interface TransactionActions {
   updateTransaction: (
     txReceipt: TransactionReceipt,
     tx?: ethers.ContractTransaction,
-    l1ToL2MsgData?: ParentToChildMessageData
+    parentToChildMsgData?: ParentToChildMessageData
   ) => void
 }
 

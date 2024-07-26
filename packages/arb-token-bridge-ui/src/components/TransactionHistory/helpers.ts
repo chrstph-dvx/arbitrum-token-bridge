@@ -311,7 +311,7 @@ export async function getUpdatedEthDeposit(
     ...tx,
     status: 'success',
     resolvedAt: isDeposited ? dayjs().valueOf() : null,
-    l1ToL2MsgData: {
+    parentToChildMsgData: {
       fetchingUpdate: false,
       status: isDeposited
         ? ParentToChildMessageStatus.FUNDS_DEPOSITED_ON_CHILD
@@ -380,7 +380,7 @@ export async function getUpdatedTokenDeposit(
       res.status === ParentToChildMessageStatus.REDEEMED
         ? dayjs().valueOf()
         : null,
-    l1ToL2MsgData: {
+    parentToChildMsgData: {
       status: res.status,
       childTxId: childTxId,
       fetchingUpdate: false,
@@ -501,14 +501,14 @@ export async function getUpdatedCctpTransfer(
 export async function getUpdatedTeleportTransfer(
   tx: MergedTransaction
 ): Promise<MergedTransaction> {
-  const { status, timestampResolved, l1ToL2MsgData, l2ToL3MsgData } =
+  const { status, timestampResolved, parentToChildMsgData, l2ToL3MsgData } =
     await fetchTeleporterDepositStatusData(tx)
 
   const updatedTx = {
     ...tx,
     status,
     timestampResolved,
-    l1ToL2MsgData,
+    parentToChildMsgData,
     l2ToL3MsgData
   }
 
@@ -648,5 +648,5 @@ export function getDestinationNetworkTxId(tx: MergedTransaction) {
 
   return tx.isWithdrawal
     ? tx.l2ToL1MsgData?.uniqueId.toString()
-    : tx.l1ToL2MsgData?.childTxId
+    : tx.parentToChildMsgData?.childTxId
 }

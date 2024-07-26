@@ -18,7 +18,7 @@ type Action =
   | {
       type: 'UPDATE_L1TOL2MSG_DATA'
       txID: string
-      l1ToL2MsgData: ParentToChildMessageData
+      parentToChildMsgData: ParentToChildMessageData
     }
   | { type: 'SET_TRANSACTIONS'; transactions: Transaction[] }
 
@@ -96,7 +96,7 @@ type TransactionBase = {
   l2NetworkID?: string
   timestampResolved?: string // time when its status was changed
   timestampCreated?: string //time when this transaction is first added to the list
-  l1ToL2MsgData?: ParentToChildMessageData
+  parentToChildMsgData?: ParentToChildMessageData
   l2ToL1MsgData?: L2ToL1MessageData
   isClassic?: boolean
 }
@@ -121,7 +121,7 @@ export interface FailedTransaction extends TransactionBase {
 
 // TODO: enforce this type restriction
 export interface DepositTransaction extends Transaction {
-  l1ToL2MsgData: ParentToChildMessageData
+  parentToChildMsgData: ParentToChildMessageData
   type: 'deposit' | 'deposit-l1'
 }
 
@@ -166,7 +166,7 @@ function updateBlockNumber(
 function updateTxnL1ToL2Msg(
   state: Transaction[],
   txID: string,
-  l1ToL2MsgData: ParentToChildMessageData
+  parentToChildMsgData: ParentToChildMessageData
 ) {
   const newState = [...state]
   const index = newState.findIndex(txn => txn.txID === txID)
@@ -183,13 +183,13 @@ function updateTxnL1ToL2Msg(
     )
   }
 
-  const previousL1ToL2MsgData = transaction.l1ToL2MsgData
-  if (!previousL1ToL2MsgData) {
+  const previousParentToChildMsgData = transaction.parentToChildMsgData
+  if (!previousParentToChildMsgData) {
     newState[index] = {
       ...transaction,
-      l1ToL2MsgData: {
-        status: l1ToL2MsgData.status,
-        retryableCreationTxID: l1ToL2MsgData.retryableCreationTxID,
+      parentToChildMsgData: {
+        status: parentToChildMsgData.status,
+        retryableCreationTxID: parentToChildMsgData.retryableCreationTxID,
         fetchingUpdate: false
       }
     }
@@ -198,7 +198,10 @@ function updateTxnL1ToL2Msg(
 
   newState[index] = {
     ...transaction,
-    l1ToL2MsgData: { ...previousL1ToL2MsgData, ...l1ToL2MsgData }
+    parentToChildMsgData: {
+      ...previousParentToChildMsgData,
+      ...parentToChildMsgData
+    }
   }
   return newState
 }
@@ -270,7 +273,7 @@ function reducer(state: Transaction[], action: Action) {
       return updateResolvedTimestamp(state, action.txID, action.timestamp)
     }
     case 'UPDATE_L1TOL2MSG_DATA': {
-      return updateTxnL1ToL2Msg(state, action.txID, action.l1ToL2MsgData)
+      return updateTxnL1ToL2Msg(state, action.txID, action.parentToChildMsgData)
     }
     case 'SET_TRANSACTIONS': {
       return action.transactions
@@ -284,11 +287,11 @@ const localStorageReducer = (state: Transaction[], action: Action) => {
   const newState = reducer(state, action)
   // don't cache fetchingUpdate state
   const stateForCache = newState.map(tx => {
-    if (tx.l1ToL2MsgData && tx.l1ToL2MsgData.fetchingUpdate) {
+    if (tx.parentToChildMsgData && tx.parentToChildMsgData.fetchingUpdate) {
       return {
         ...tx,
-        l1ToL2MsgData: {
-          ...tx.l1ToL2MsgData,
+        parentToChildMsgData: {
+          ...tx.parentToChildMsgData,
           fetchingUpdate: false
         }
       }
@@ -327,12 +330,12 @@ const useTransactions = (): [Transaction[], TransactionActions] => {
 
   const updateTxnL1ToL2MsgData = async (
     txID: string,
-    l1ToL2MsgData: ParentToChildMessageData
+    parentToChildMsgData: ParentToChildMessageData
   ) => {
     dispatch({
       type: 'UPDATE_L1TOL2MSG_DATA',
       txID: txID,
-      l1ToL2MsgData
+      parentToChildMsgData
     })
   }
 
@@ -370,7 +373,7 @@ const useTransactions = (): [Transaction[], TransactionActions] => {
   const updateTransaction = (
     txReceipt: TransactionReceipt,
     tx?: ethers.ContractTransaction,
-    l1ToL2MsgData?: ParentToChildMessageData
+    parentToChildMsgData?: ParentToChildMessageData
   ) => {
     if (!txReceipt.transactionHash) {
       return console.warn(
@@ -396,8 +399,8 @@ const useTransactions = (): [Transaction[], TransactionActions] => {
     if (tx) {
       setResolvedTimestamp(txReceipt.transactionHash, new Date().toISOString())
     }
-    if (l1ToL2MsgData) {
-      updateTxnL1ToL2MsgData(txReceipt.transactionHash, l1ToL2MsgData)
+    if (parentToChildMsgData) {
+      updateTxnL1ToL2MsgData(txReceipt.transactionHash, parentToChildMsgData)
     }
   }
 

@@ -59,17 +59,17 @@ export const getDepositStatus = (tx: Transaction | MergedTransaction) => {
       destinationChainId: tx.childChainId
     })
   ) {
-    const { l2ToL3MsgData, l1ToL2MsgData } = tx
+    const { l2ToL3MsgData, parentToChildMsgData } = tx
 
     // if any of the retryable info is missing, first fetch might be pending
-    if (!l1ToL2MsgData || !l2ToL3MsgData) return DepositStatus.L2_PENDING
+    if (!parentToChildMsgData || !l2ToL3MsgData) return DepositStatus.L2_PENDING
 
     // if we find `l2ForwarderRetryableTxID` then this tx will need to be redeemed
     if (l2ToL3MsgData.l2ForwarderRetryableTxID) return DepositStatus.L2_FAILURE
 
     // if we find first retryable leg failing, then no need to check for the second leg
     const firstLegDepositStatus = getDepositStatusFromL1ToL2MessageStatus(
-      l1ToL2MsgData.status
+      parentToChildMsgData.status
     )
     if (firstLegDepositStatus !== DepositStatus.L2_SUCCESS) {
       return firstLegDepositStatus
@@ -81,19 +81,21 @@ export const getDepositStatus = (tx: Transaction | MergedTransaction) => {
     if (typeof secondLegDepositStatus !== 'undefined') {
       return secondLegDepositStatus
     }
-    switch (l1ToL2MsgData.status) {
+    switch (parentToChildMsgData.status) {
       case ParentToChildMessageStatus.REDEEMED:
-        return DepositStatus.L2_PENDING // tx is still pending if `l1ToL2MsgData` is redeemed (but l2ToL3MsgData is not)
+        return DepositStatus.L2_PENDING // tx is still pending if `parentToChildMsgData` is redeemed (but l2ToL3MsgData is not)
       default:
-        return getDepositStatusFromL1ToL2MessageStatus(l1ToL2MsgData.status)
+        return getDepositStatusFromL1ToL2MessageStatus(
+          parentToChildMsgData.status
+        )
     }
   }
 
-  const { l1ToL2MsgData } = tx
-  if (!l1ToL2MsgData) {
+  const { parentToChildMsgData } = tx
+  if (!parentToChildMsgData) {
     return DepositStatus.L2_PENDING
   }
-  switch (l1ToL2MsgData.status) {
+  switch (parentToChildMsgData.status) {
     case ParentToChildMessageStatus.NOT_YET_CREATED:
       return DepositStatus.L2_PENDING
     case ParentToChildMessageStatus.CREATION_FAILED:
@@ -149,7 +151,7 @@ export const transformDeposit = (tx: Transaction): MergedTransaction => {
     isWithdrawal: false,
     blockNum: tx.blockNumber || null,
     tokenAddress: tx.tokenAddress || null,
-    l1ToL2MsgData: tx.l1ToL2MsgData,
+    parentToChildMsgData: tx.parentToChildMsgData,
     l2ToL1MsgData: tx.l2ToL1MsgData,
     l2ToL3MsgData: tx.l2ToL3MsgData,
     depositStatus: getDepositStatus(tx),
