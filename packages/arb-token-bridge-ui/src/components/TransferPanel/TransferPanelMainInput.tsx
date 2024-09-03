@@ -29,8 +29,6 @@ function MaxButton({
   const {
     app: { selectedToken }
   } = useAppState()
-  const [networks] = useNetworks()
-  const { isDepositMode } = useNetworksRelationship(networks)
 
   const selectedTokenBalances = useSelectedTokenBalances()
   const nativeCurrencyBalances = useNativeCurrencyBalances()
@@ -38,9 +36,7 @@ function MaxButton({
   const maxButtonVisible = useMemo(() => {
     const nativeCurrencySourceBalance = nativeCurrencyBalances.sourceBalance
 
-    const tokenBalance = isDepositMode
-      ? selectedTokenBalances.parentBalance
-      : selectedTokenBalances.childBalance
+    const tokenBalance = selectedTokenBalances.sourceBalance
 
     if (selectedToken) {
       return tokenBalance && !tokenBalance.isZero()
@@ -49,9 +45,7 @@ function MaxButton({
     return nativeCurrencySourceBalance && !nativeCurrencySourceBalance.isZero()
   }, [
     nativeCurrencyBalances.sourceBalance,
-    isDepositMode,
-    selectedTokenBalances.parentBalance,
-    selectedTokenBalances.childBalance,
+    selectedTokenBalances.sourceBalance,
     selectedToken
   ])
 
@@ -90,13 +84,11 @@ function SourceChainTokenBalance({
 
   const nativeCurrency = useNativeCurrency({ provider: childChainProvider })
 
-  const tokenBalance = isDepositMode
-    ? selectedTokenBalances.parentBalance
-    : selectedTokenBalances.childBalance
-
   const balance =
     balanceOverride ??
-    (selectedToken ? tokenBalance : nativeCurrencyBalances.sourceBalance)
+    (selectedToken
+      ? selectedTokenBalances.sourceBalance
+      : nativeCurrencyBalances.sourceBalance)
 
   const formattedBalance = balance
     ? formatAmount(balance, {

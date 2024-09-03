@@ -63,7 +63,33 @@ export function useSelectedTokenBalances(): Balances {
       return result
     }
 
-    let parentBalance =
+    // native USDC withdrawal via CCTP
+    if (
+      isTokenArbitrumOneNativeUSDC(selectedToken.address) &&
+      isEthereumArbitrumOnePair
+    ) {
+      return {
+        sourceBalance:
+          erc20ChildBalances[selectedToken.address.toLowerCase()] ?? null,
+        destinationBalance:
+          erc20ParentBalances[CommonAddress.Ethereum.USDC.toLowerCase()] ?? null
+      }
+    }
+
+    // native USDC withdrawal via CCTP
+    if (
+      isTokenArbitrumSepoliaNativeUSDC(selectedToken.address.toLowerCase()) &&
+      isSepoliaArbSepoliaPair
+    ) {
+      return {
+        sourceBalance:
+          erc20ChildBalances[selectedToken.address.toLowerCase()] ?? null,
+        destinationBalance:
+          erc20ParentBalances[CommonAddress.Sepolia.USDC.toLowerCase()] ?? null
+      }
+    }
+
+    const parentBalance =
       erc20ParentBalances[selectedToken.address.toLowerCase()] ?? null
 
     let childBalance: BigNumber | null = null
@@ -75,25 +101,6 @@ export function useSelectedTokenBalances(): Balances {
     } else {
       // token not bridged to the child chain, show zero
       childBalance = constants.Zero
-    }
-
-    if (
-      isTokenArbitrumOneNativeUSDC(selectedToken.address) &&
-      isEthereumArbitrumOnePair
-    ) {
-      parentBalance =
-        erc20ParentBalances[CommonAddress.Ethereum.USDC.toLowerCase()] ?? null
-      childBalance =
-        erc20ChildBalances[selectedToken.address.toLowerCase()] ?? null
-    }
-    if (
-      isTokenArbitrumSepoliaNativeUSDC(selectedToken.address.toLowerCase()) &&
-      isSepoliaArbSepoliaPair
-    ) {
-      parentBalance =
-        erc20ParentBalances[CommonAddress.Sepolia.USDC.toLowerCase()] ?? null
-      childBalance =
-        erc20ChildBalances[selectedToken.address.toLowerCase()] ?? null
     }
 
     return {

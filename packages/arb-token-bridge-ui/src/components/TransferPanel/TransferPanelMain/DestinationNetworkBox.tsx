@@ -40,8 +40,7 @@ function DestinationNetworkBalance({
     useNetworksRelationship(networks)
   const { isArbitrumOne } = isNetwork(childChain.id)
 
-  const { ethParentBalance, ethChildBalance, erc20ChildBalances } =
-    useBalances()
+  const { erc20ChildBalances } = useBalances()
   const nativeCurrencyBalances = useNativeCurrencyBalances()
   const selectedTokenBalances = useSelectedTokenBalances()
 
@@ -51,11 +50,7 @@ function DestinationNetworkBalance({
     return (
       <>
         <TokenBalance
-          balance={
-            isDepositMode
-              ? selectedTokenBalances.childBalance
-              : selectedTokenBalances.parentBalance
-          }
+          balance={selectedTokenBalances.destinationBalance}
           on={isDepositMode ? NetworkType.childChain : NetworkType.parentChain}
           forToken={selectedToken}
           tokenSymbolOverride={
