@@ -1,15 +1,12 @@
 import { useMemo } from 'react'
-import { BigNumber } from 'ethers'
 
 import { useNativeCurrency } from '../../../hooks/useNativeCurrency'
 import { useNetworks } from '../../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../../hooks/useNetworksRelationship'
 import { useBalances } from '../../../hooks/useBalances'
+import { Balances } from '../../../hooks/TransferPanel/useSelectedTokenBalances'
 
-export function useNativeCurrencyBalances(): {
-  sourceBalance: BigNumber | null
-  destinationBalance: BigNumber | null
-} {
+export function useNativeCurrencyBalances(): Balances {
   const [networks] = useNetworks()
   const { childChainProvider, isDepositMode } =
     useNetworksRelationship(networks)
