@@ -92,21 +92,12 @@ type ChainBlob = {
 }
 
 function DynamicMetaData({
-  sourceChainSlug,
-  destinationChainSlug
+  sourceChain,
+  destinationChain
 }: {
-  sourceChainSlug: ChainKeyQueryParam
-  destinationChainSlug: ChainKeyQueryParam
+  sourceChain: ChainBlob
+  destinationChain: ChainBlob
 }) {
-  const sourceChain: ChainBlob = {
-    name: getChainForChainKeyQueryParam(sourceChainSlug).name,
-    slug: sourceChainSlug
-  }
-  const destinationChain: ChainBlob = {
-    name: getChainForChainKeyQueryParam(destinationChainSlug).name,
-    slug: destinationChainSlug
-  }
-
   const siteDescription = `Bridge from ${sourceChain.name} to ${destinationChain.name} using the Arbitrum Bridge. Built to scale Ethereum, Arbitrum brings you 10x lower costs while inheriting Ethereum’s security model. Arbitrum is a Layer 2 Optimistic Rollup.`
   const siteDomain = 'https://bridge.arbitrum.io'
 
@@ -154,12 +145,26 @@ export default function App({ Component, pageProps, router }: AppProps) {
   const destinationChainSlug = (router.query.destinationChain?.toString() ??
     'arbitrum-one') as ChainKeyQueryParam
 
+  const sourceChainName = getChainForChainKeyQueryParam(sourceChainSlug).name
+
+  const destinationChainName =
+    getChainForChainKeyQueryParam(destinationChainSlug).name
+
+  console.log('source chain name: ', sourceChainName)
+  console.log('destination chain name: ', destinationChainName)
+
   return (
     <>
       <Head>
         <DynamicMetaData
-          sourceChainSlug={sourceChainSlug}
-          destinationChainSlug={destinationChainSlug}
+          sourceChain={{
+            name: sourceChainName,
+            slug: sourceChainSlug
+          }}
+          destinationChain={{
+            name: destinationChainName,
+            slug: destinationChainSlug
+          }}
         />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>

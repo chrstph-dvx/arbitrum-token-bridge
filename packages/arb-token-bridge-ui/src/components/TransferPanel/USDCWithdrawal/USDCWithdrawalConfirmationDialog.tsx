@@ -11,11 +11,7 @@ import {
 } from '../../../util/fastBridges'
 import { TabButton } from '../../common/Tab'
 import { BridgesTable } from '../../common/BridgesTable'
-import {
-  getExplorerUrl,
-  getNetworkName,
-  isNetwork
-} from '../../../util/networks'
+import { getExplorerUrl, isNetwork } from '../../../util/networks'
 import { CommonAddress } from '../../../util/CommonAddressUtils'
 import { USDCWithdrawalConfirmationDialogCheckbox } from './USDCWithdrawalConfirmationDialogCheckbox'
 import { CctpTabContent } from '../CctpTabContent'
@@ -25,6 +21,7 @@ import { useNetworksRelationship } from '../../../hooks/useNetworksRelationship'
 import { SecurityNotGuaranteed } from '../SecurityLabels'
 import { trackEvent } from '../../../util/AnalyticsUtils'
 import { getUSDCAddresses } from '../../../state/cctpState'
+import { getNetworkName } from '../../../util/bridgeUiConfig'
 
 enum SelectedTabName {
   ThirdParty = 'third_party',

@@ -9,7 +9,6 @@ import {
 } from '../../state/app/state'
 import { trackEvent } from '../../util/AnalyticsUtils'
 import { isUserRejectedError } from '../../util/isUserRejectedError'
-import { getNetworkName } from '../../util/networks'
 import { errorToast } from '../common/atoms/Toast'
 import { Button } from '../common/Button'
 import { useSwitchNetworkWithConfig } from '../../hooks/useSwitchNetworkWithConfig'
@@ -23,6 +22,7 @@ import { isTeleportTx } from '../../hooks/useTransactions'
 import { useRedeemTeleporter } from '../../hooks/useRedeemTeleporter'
 import { sanitizeTokenSymbol } from '../../util/TokenUtils'
 import { formatAmount } from '../../util/NumberUtils'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 export function TransactionsTableRowAction({
   tx,

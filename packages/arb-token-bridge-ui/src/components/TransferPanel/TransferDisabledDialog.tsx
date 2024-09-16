@@ -6,10 +6,11 @@ import { Dialog } from '../common/Dialog'
 import { sanitizeTokenSymbol } from '../../util/TokenUtils'
 import { useNetworks } from '../../hooks/useNetworks'
 import { ExternalLink } from '../common/ExternalLink'
-import { ChainId, getNetworkName } from '../../util/networks'
+import { ChainId } from '../../util/networks'
 import { getL2ConfigForTeleport } from '../../token-bridge-sdk/teleport'
 import { useNetworksRelationship } from '../../hooks/useNetworksRelationship'
 import { withdrawOnlyTokens } from '../../util/WithdrawOnlyUtils'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 type TransferDisabledDialogStore = {
   isOpen: boolean

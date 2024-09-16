@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import { Checkbox } from '../../common/Checkbox'
-import { getNetworkName, isNetwork } from '../../../util/networks'
+import { isNetwork } from '../../../util/networks'
 import { useNetworks } from '../../../hooks/useNetworks'
 import {
   getCctpTransferDuration,
   minutesToHumanReadableTime
 } from '../../../hooks/useTransferDuration'
+import { getNetworkName } from '../../../util/bridgeUiConfig'
 
 export function USDCWithdrawalConfirmationDialogCheckbox({
   onChange,

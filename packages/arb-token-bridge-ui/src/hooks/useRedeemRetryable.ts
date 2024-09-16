@@ -6,12 +6,12 @@ import dayjs from 'dayjs'
 import { DepositStatus, MergedTransaction } from '../state/app/state'
 import { getRetryableTicket } from '../util/RetryableUtils'
 import { trackEvent } from '../util/AnalyticsUtils'
-import { getNetworkName } from '../util/networks'
 import { isUserRejectedError } from '../util/isUserRejectedError'
 import { errorToast } from '../components/common/atoms/Toast'
 import { getProviderForChainId } from '@/token-bridge-sdk/utils'
 import { useTransactionHistory } from './useTransactionHistory'
 import { Address } from '../util/AddressUtils'
+import { getNetworkName } from '../util/bridgeUiConfig'
 
 export type UseRedeemRetryableResult = {
   redeem: () => Promise<void>

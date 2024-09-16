@@ -15,13 +15,16 @@ import {
 import { twMerge } from 'tailwind-merge'
 import { AutoSizer, List, ListRowProps } from 'react-virtualized'
 
-import { ChainId, isNetwork, getNetworkName } from '../../util/networks'
+import { ChainId, isNetwork } from '../../util/networks'
 import { useIsTestnetMode } from '../../hooks/useIsTestnetMode'
 import { SearchPanel } from './SearchPanel/SearchPanel'
 import { SearchPanelTable } from './SearchPanel/SearchPanelTable'
 import { TestnetToggle } from './TestnetToggle'
 import { useArbQueryParams } from '../../hooks/useArbQueryParams'
-import { getBridgeUiConfigForChain } from '../../util/bridgeUiConfig'
+import {
+  getBridgeUiConfigForChain,
+  getNetworkName
+} from '../../util/bridgeUiConfig'
 import { getWagmiChain } from '../../util/wagmi/getWagmiChain'
 import { NetworkImage } from './NetworkImage'
 import { Dialog, UseDialogProps, useDialog } from './Dialog'

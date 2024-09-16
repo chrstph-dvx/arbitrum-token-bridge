@@ -2,7 +2,6 @@ import { Chain } from 'wagmi'
 import { mainnet, arbitrum } from 'wagmi/chains'
 
 import {
-  chainToWagmiChain,
   sepolia,
   holesky,
   arbitrumNova,
@@ -11,9 +10,9 @@ import {
   localL2Network,
   localL3Network
 } from './wagmiAdditionalNetworks'
-import { ChainId } from '../networks'
-import { getCustomChainFromLocalStorageById } from '../networks'
+import { ChainId, getCustomChainFromLocalStorageById } from '../networks'
 import { orbitChains } from '../orbitChainsList'
+import { chainToWagmiChain } from './chainToWagmiChain'
 
 export function getWagmiChain(chainId: number): Chain {
   const customChain = getCustomChainFromLocalStorageById(chainId)

@@ -14,7 +14,7 @@ import { getProviderForChainId } from '@/token-bridge-sdk/utils'
 import { DepositStatus, MergedTransaction } from '../../state/app/state'
 import { formatAmount } from '../../util/NumberUtils'
 import { sanitizeTokenSymbol } from '../../util/TokenUtils'
-import { getExplorerUrl, getNetworkName } from '../../util/networks'
+import { getExplorerUrl } from '../../util/networks'
 import { NetworkImage } from '../common/NetworkImage'
 import {
   getDestinationNetworkTxId,
@@ -34,6 +34,7 @@ import { Address } from '../../util/AddressUtils'
 import { isBatchTransfer } from '../../util/TokenDepositUtils'
 import { BatchTransferNativeTokenTooltip } from './TransactionHistoryTable'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 const StatusLabel = ({ tx }: { tx: MergedTransaction }) => {
   const { sourceChainId, destinationChainId } = tx

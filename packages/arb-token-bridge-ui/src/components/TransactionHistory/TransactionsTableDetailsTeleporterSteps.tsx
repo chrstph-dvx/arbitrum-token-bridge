@@ -6,7 +6,7 @@ import {
   CheckCircleIcon
 } from '@heroicons/react/24/outline'
 import { TeleporterMergedTransaction } from '../../state/app/state'
-import { getExplorerUrl, getNetworkName, isNetwork } from '../../util/networks'
+import { getExplorerUrl, isNetwork } from '../../util/networks'
 import {
   firstRetryableLegRequiresRedeem,
   getChainIdForRedeemingRetryable,
@@ -26,6 +26,7 @@ import {
   getStandardDepositDuration,
   minutesToHumanReadableTime
 } from '../../hooks/useTransferDuration'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 const TeleportMiddleStepFailureExplanationNote = ({
   tx

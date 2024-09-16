@@ -7,10 +7,11 @@ import { BridgesTable } from '../common/BridgesTable'
 import { SecurityNotGuaranteed } from './SecurityLabels'
 import { Dialog, UseDialogProps } from '../common/Dialog'
 import { FastBridgeInfo, FastBridgeNames } from '../../util/fastBridges'
-import { ChainId, getNetworkName, isNetwork } from '../../util/networks'
+import { ChainId, isNetwork } from '../../util/networks'
 import { ether } from '../../constants'
 import { useArbQueryParams } from '../../hooks/useArbQueryParams'
 import { useNetworks } from '../../hooks/useNetworks'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 /**
  * On the UI, user can select the pair Arbitrum One/Arbitrum Nova with the network selection dropdowns.

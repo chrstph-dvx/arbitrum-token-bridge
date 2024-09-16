@@ -3,14 +3,17 @@ import { useBlockNumber } from 'wagmi'
 import Image from 'next/image'
 import { useLocalStorage } from '@uidotdev/usehooks'
 
-import { getNetworkName, isNetwork } from '../../util/networks'
+import { isNetwork } from '../../util/networks'
 import { useNetworkTPS } from '../../hooks/useNetworkTPS'
 import { useGasPrice } from '../../hooks/useGasPrice'
 import { useArbQueryParams } from '../../hooks/useArbQueryParams'
 import { useNetworks } from '../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../hooks/useNetworksRelationship'
 import { XMarkIcon } from '@heroicons/react/24/outline'
-import { getBridgeUiConfigForChain } from '../../util/bridgeUiConfig'
+import {
+  getBridgeUiConfigForChain,
+  getNetworkName
+} from '../../util/bridgeUiConfig'
 
 export const statsLocalStorageKey = 'arbitrum:bridge:preferences:stats'
 

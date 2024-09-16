@@ -1,8 +1,10 @@
 import Image from 'next/image'
 import { twMerge } from 'tailwind-merge'
 
-import { getNetworkName } from '../../util/networks'
-import { getBridgeUiConfigForChain } from '../../util/bridgeUiConfig'
+import {
+  getBridgeUiConfigForChain,
+  getNetworkName
+} from '../../util/bridgeUiConfig'
 
 export const NetworkImage = ({
   chainId,

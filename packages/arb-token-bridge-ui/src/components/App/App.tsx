@@ -26,7 +26,7 @@ import { BalanceUpdater } from '../syncers/BalanceUpdater'
 import { TokenListSyncer } from '../syncers/TokenListSyncer'
 import { Header } from '../common/Header'
 import { HeaderAccountPopover } from '../common/HeaderAccountPopover'
-import { getNetworkName, isNetwork, rpcURLs } from '../../util/networks'
+import { isNetwork, rpcURLs } from '../../util/networks'
 import {
   ArbQueryParamProvider,
   useArbQueryParams
@@ -42,6 +42,7 @@ import { HeaderConnectWalletButton } from '../common/HeaderConnectWalletButton'
 import { ProviderName, trackEvent } from '../../util/AnalyticsUtils'
 import { onDisconnectHandler } from '../../util/walletConnectUtils'
 import { addressIsSmartContract } from '../../util/AddressUtils'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 declare global {
   interface Window {

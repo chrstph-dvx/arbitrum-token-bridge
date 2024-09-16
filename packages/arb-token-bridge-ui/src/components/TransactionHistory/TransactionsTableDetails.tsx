@@ -10,7 +10,7 @@ import EthereumLogoRoundLight from '@/images/EthereumLogoRoundLight.svg'
 import { getProviderForChainId } from '@/token-bridge-sdk/utils'
 
 import { useTxDetailsStore } from './TransactionHistory'
-import { getExplorerUrl, getNetworkName, isNetwork } from '../../util/networks'
+import { getExplorerUrl, isNetwork } from '../../util/networks'
 import { NetworkImage } from '../common/NetworkImage'
 import { TransactionsTableTokenImage } from './TransactionsTableTokenImage'
 import { formatAmount, formatUSD } from '../../util/NumberUtils'
@@ -27,6 +27,7 @@ import { sanitizeTokenSymbol } from '../../util/TokenUtils'
 import { isBatchTransfer } from '../../util/TokenDepositUtils'
 import { BatchTransferNativeTokenTooltip } from './TransactionHistoryTable'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 const DetailsBox = ({
   children,

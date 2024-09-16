@@ -8,7 +8,6 @@ import {
 import { utils } from 'ethers'
 import { PlusCircleIcon } from '@heroicons/react/24/outline'
 
-import { getNetworkName } from '../../../util/networks'
 import {
   NetworkButton,
   NetworkSelectionContainer
@@ -37,6 +36,7 @@ import { useIsBatchTransferSupported } from '../../../hooks/TransferPanel/useIsB
 import { Button } from '../../common/Button'
 import { useSelectedTokenDecimals } from '../../../hooks/TransferPanel/useSelectedTokenDecimals'
 import { useBalanceOnSourceChain } from '../../../hooks/useBalanceOnSourceChain'
+import { getNetworkName } from '../../../util/bridgeUiConfig'
 
 function Amount2ToggleButton({
   onClick

@@ -25,7 +25,6 @@ import {
   UseTransactionHistoryResult
 } from '../../hooks/useTransactionHistory'
 import { Tooltip } from '../common/Tooltip'
-import { getNetworkName } from '../../util/networks'
 import { isTxPending } from './helpers'
 import { PendingDepositWarning } from './PendingDepositWarning'
 import { TransactionsTableRow } from './TransactionsTableRow'
@@ -33,6 +32,7 @@ import { EmptyTransactionHistory } from './EmptyTransactionHistory'
 import { Address } from '../../util/AddressUtils'
 import { MergedTransaction } from '../../state/app/state'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 export const BatchTransferNativeTokenTooltip = ({
   children,

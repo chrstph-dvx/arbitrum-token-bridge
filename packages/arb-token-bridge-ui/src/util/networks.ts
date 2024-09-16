@@ -7,7 +7,6 @@ import {
 } from '@arbitrum/sdk'
 
 import { loadEnvironmentVariableWithFallback } from './index'
-import { getBridgeUiConfigForChain } from './bridgeUiConfig'
 import { chainIdToInfuraUrl } from './infura'
 
 export enum ChainId {
@@ -435,10 +434,6 @@ export function isNetwork(chainId: ChainId) {
     // Core Chain is a chain category for the UI
     isCoreChain
   }
-}
-
-export function getNetworkName(chainId: number) {
-  return getBridgeUiConfigForChain(chainId).network.name
 }
 
 export function getSupportedChainIds({

@@ -1,10 +1,11 @@
 import { useSwitchNetwork } from 'wagmi'
 import { SwitchNetworkArgs } from '@wagmi/core'
 
-import { getNetworkName, isNetwork } from '../util/networks'
+import { isNetwork } from '../util/networks'
 import { isUserRejectedError } from '../util/isUserRejectedError'
 import { warningToast } from '../components/common/atoms/Toast'
 import { captureSentryErrorWithExtraData } from '../util/SentryUtils'
+import { getNetworkName } from '../util/bridgeUiConfig'
 
 type SwitchNetworkConfig = {
   isSwitchingNetworkBeforeTx?: boolean

@@ -122,3 +122,7 @@ export function getBridgeUiConfigForChain(chainId: number): BridgeUiConfig {
     }
   }
 }
+
+export function getNetworkName(chainId: number) {
+  return getBridgeUiConfigForChain(chainId).network.name
+}

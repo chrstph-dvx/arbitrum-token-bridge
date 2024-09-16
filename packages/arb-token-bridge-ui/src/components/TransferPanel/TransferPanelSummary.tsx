@@ -2,7 +2,7 @@ import React, { useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { formatAmount } from '../../util/NumberUtils'
-import { getNetworkName, isNetwork } from '../../util/networks'
+import { isNetwork } from '../../util/networks'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
 import { useGasSummary } from '../../hooks/TransferPanel/useGasSummary'
 import { useArbQueryParams } from '../../hooks/useArbQueryParams'
@@ -17,6 +17,7 @@ import { isTokenNativeUSDC } from '../../util/TokenUtils'
 import { NoteBox } from '../common/NoteBox'
 import { DISABLED_CHAIN_IDS } from './useTransferReadiness'
 import { useIsBatchTransferSupported } from '../../hooks/TransferPanel/useIsBatchTransferSupported'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 export type TransferPanelSummaryToken = {
   symbol: string

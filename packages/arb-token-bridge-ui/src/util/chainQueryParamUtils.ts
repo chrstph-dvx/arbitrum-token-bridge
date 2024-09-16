@@ -1,44 +1,67 @@
-import { Chain } from 'wagmi'
-import * as chains from 'wagmi/chains'
+import { Chain, mainnet } from 'wagmi'
 
 import {
   arbitrumNova,
   arbitrumSepolia,
   localL1Network,
   localL2Network,
-  localL3Network
-} from '../util/wagmi/wagmiAdditionalNetworks'
+  localL3Network,
+  sepolia
+} from './wagmi/wagmiAdditionalNetworks'
 import { ChainKeyQueryParam } from '../types/ChainQueryParam'
+import { ChainId, rpcURLs } from './networks'
+import { ether } from '../constants'
 import { getOrbitChains } from './orbitChainsList'
-import { chainToWagmiChain } from '../util/wagmi/wagmiAdditionalNetworks'
+import { arbitrum } from '@wagmi/chains'
+import { chainToWagmiChain } from './wagmi/chainToWagmiChain'
+
+// const arbitrumNova: Chain = {
+//   id: ChainId.ArbitrumNova,
+//   name: 'Arbitrum Nova',
+//   network: 'arbitrum-nova',
+//   nativeCurrency: ether,
+//   rpcUrls: {
+//     default: {
+//       http: [rpcURLs[ChainId.ArbitrumNova]!]
+//     },
+//     public: {
+//       http: [rpcURLs[ChainId.ArbitrumNova]!]
+//     }
+//   },
+//   blockExplorers: {
+//     etherscan: { name: 'Arbiscan', url: 'https://nova.arbiscan.io' },
+//     default: { name: 'Arbiscan', url: 'https://nova.arbiscan.io' }
+//   }
+// }
 
 export function getChainForChainKeyQueryParam(
   chainKeyQueryParam: ChainKeyQueryParam
 ): Chain {
+  console.log('in getChainForChainKeyQueryParam')
   switch (chainKeyQueryParam) {
     case 'ethereum':
-      return chains.mainnet
+      return mainnet
 
     case 'sepolia':
-      return chains.sepolia
+      return sepolia
 
     case 'arbitrum-one':
-      return chains.arbitrum
+      return arbitrum
 
-    case 'arbitrum-nova':
-      return arbitrumNova
+    // case 'arbitrum-nova':
+    //   return arbitrumNova
 
     case 'arbitrum-sepolia':
       return arbitrumSepolia
 
-    case 'custom-localhost':
-      return localL1Network
+    // case 'custom-localhost':
+    //   return localL1Network
 
-    case 'arbitrum-localhost':
-      return localL2Network
+    // case 'arbitrum-localhost':
+    //   return localL2Network
 
-    case 'l3-localhost':
-      return localL3Network
+    // case 'l3-localhost':
+    //   return localL3Network
 
     default:
       const orbitChain = getOrbitChains().find(

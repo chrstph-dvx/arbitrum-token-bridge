@@ -21,7 +21,6 @@ import {
   secondRetryableLegForTeleportRequiresRedeem
 } from '../util/RetryableUtils'
 import { trackEvent } from '../util/AnalyticsUtils'
-import { getNetworkName } from '../util/networks'
 import { isUserRejectedError } from '../util/isUserRejectedError'
 import { errorToast } from '../components/common/atoms/Toast'
 import { useTransactionHistory } from './useTransactionHistory'
@@ -29,6 +28,7 @@ import { Address } from '../util/AddressUtils'
 import { isTeleportTx, L2ToL3MessageData } from './useTransactions'
 import { UseRedeemRetryableResult } from './useRedeemRetryable'
 import { getUpdatedTeleportTransfer } from '../components/TransactionHistory/helpers'
+import { getNetworkName } from '../util/bridgeUiConfig'
 
 // common handling for redeeming all 3 retryables for teleporter
 const redeemRetryable = async (retryable: ParentToChildMessageWriter) => {

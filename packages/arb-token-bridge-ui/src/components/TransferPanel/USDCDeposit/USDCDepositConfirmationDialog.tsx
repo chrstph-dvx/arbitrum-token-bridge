@@ -11,11 +11,7 @@ import {
 import { TabButton } from '../../common/Tab'
 import { BridgesTable } from '../../common/BridgesTable'
 import { useAppState } from '../../../state'
-import {
-  getExplorerUrl,
-  getNetworkName,
-  isNetwork
-} from '../../../util/networks'
+import { getExplorerUrl, isNetwork } from '../../../util/networks'
 import { trackEvent } from '../../../util/AnalyticsUtils'
 import { CommonAddress } from '../../../util/CommonAddressUtils'
 import { USDCDepositConfirmationDialogCheckbox } from './USDCDepositConfirmationDialogCheckbox'
@@ -29,6 +25,7 @@ import { useNetworks } from '../../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../../hooks/useNetworksRelationship'
 import { SecurityGuaranteed, SecurityNotGuaranteed } from '../SecurityLabels'
 import { getUSDCAddresses } from '../../../state/cctpState'
+import { getNetworkName } from '../../../util/bridgeUiConfig'
 
 type Props = UseDialogProps & {
   amount: string

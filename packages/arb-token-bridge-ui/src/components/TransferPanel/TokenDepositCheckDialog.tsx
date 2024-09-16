@@ -5,7 +5,7 @@ import { DOCS_DOMAIN } from '../../constants'
 import { NoteBox } from '../common/NoteBox'
 import { ExternalLink } from '../common/ExternalLink'
 import { useNetworks } from '../../hooks/useNetworks'
-import { getNetworkName } from '../../util/networks'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 export type TokenDepositCheckDialogType = 'user-added-token' | 'new-token'
 

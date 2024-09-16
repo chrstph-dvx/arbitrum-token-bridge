@@ -21,7 +21,7 @@ import {
   sanitizeTokenSymbol
 } from '../../util/TokenUtils'
 import { SafeImage } from '../common/SafeImage'
-import { getExplorerUrl, getNetworkName } from '../../util/networks'
+import { getExplorerUrl } from '../../util/networks'
 import { Tooltip } from '../common/Tooltip'
 import { StatusBadge } from '../common/StatusBadge'
 import { ERC20BridgeToken } from '../../hooks/arbTokenBridge.types'
@@ -32,6 +32,7 @@ import { useNetworks } from '../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../hooks/useNetworksRelationship'
 import { TokenLogoFallback } from './TokenInfo'
 import { useBalanceOnSourceChain } from '../../hooks/useBalanceOnSourceChain'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 function tokenListIdsToNames(ids: number[]): string {
   return ids

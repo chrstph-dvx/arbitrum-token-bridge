@@ -13,7 +13,6 @@ import {
   ChainWithRpcUrl,
   getCustomChainsFromLocalStorage,
   getCustomChainFromLocalStorageById,
-  getNetworkName,
   removeCustomChainFromLocalStorage,
   saveCustomChainToLocalStorage,
   supportedCustomOrbitParentChains,
@@ -25,6 +24,7 @@ import { Erc20Data, fetchErc20Data } from '../../util/TokenUtils'
 import { getProviderForChainId } from '@/token-bridge-sdk/utils'
 import { Transition } from './Transition'
 import { Button } from './Button'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 const orbitConfigsLocalStorageKey = 'arbitrum:orbit:configs'
 

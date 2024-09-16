@@ -1,16 +1,10 @@
-import { BigNumber } from 'ethers'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { create } from 'zustand'
 import useSWRImmutable from 'swr/immutable'
 import { useInterval } from 'react-use'
 
 import { getCctpUtils } from '@/token-bridge-sdk/cctp'
-import {
-  ChainId,
-  getL1BlockTime,
-  getNetworkName,
-  isNetwork
-} from '../util/networks'
+import { ChainId, getL1BlockTime, isNetwork } from '../util/networks'
 import { fetchCCTPDeposits, fetchCCTPWithdrawals } from '../util/cctp/fetchCCTP'
 import { DepositStatus, MergedTransaction, WithdrawalStatus } from './app/state'
 import { normalizeTimestamp } from './app/utils'
@@ -29,6 +23,7 @@ import { AssetType } from '../hooks/arbTokenBridge.types'
 import { useTransactionHistory } from '../hooks/useTransactionHistory'
 import { Address } from '../util/AddressUtils'
 import { captureSentryErrorWithExtraData } from '../util/SentryUtils'
+import { getNetworkName } from '../util/bridgeUiConfig'
 
 // see https://developers.circle.com/stablecoin/docs/cctp-technical-reference#block-confirmations-for-attestations
 // Blocks need to be awaited on the L1 whether it's a deposit or a withdrawal

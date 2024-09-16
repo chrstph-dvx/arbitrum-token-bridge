@@ -10,7 +10,7 @@ import { TabButton } from '../common/Tab'
 import { BridgesTable } from '../common/BridgesTable'
 import { useAppState } from '../../state'
 import { trackEvent } from '../../util/AnalyticsUtils'
-import { getNetworkName, isNetwork } from '../../util/networks'
+import { isNetwork } from '../../util/networks'
 import { getFastBridges } from '../../util/fastBridges'
 import { CONFIRMATION_PERIOD_ARTICLE_LINK } from '../../constants'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
@@ -18,6 +18,7 @@ import { useNetworks } from '../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../hooks/useNetworksRelationship'
 import { SecurityGuaranteed, SecurityNotGuaranteed } from './SecurityLabels'
 import { getWithdrawalConfirmationDate } from '../../hooks/useTransferDuration'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 function getCalendarUrl(
   withdrawalDate: dayjs.Dayjs,

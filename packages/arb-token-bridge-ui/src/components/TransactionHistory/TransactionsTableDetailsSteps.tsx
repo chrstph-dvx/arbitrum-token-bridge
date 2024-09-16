@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 import { DepositStatus, MergedTransaction } from '../../state/app/state'
-import { getExplorerUrl, getNetworkName } from '../../util/networks'
+import { getExplorerUrl } from '../../util/networks'
 import {
   getDestinationNetworkTxId,
   isTxClaimable,
@@ -31,6 +31,7 @@ import {
   minutesToHumanReadableTime,
   useTransferDuration
 } from '../../hooks/useTransferDuration'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 function needsToClaimTransfer(tx: MergedTransaction) {
   return tx.isCctp || tx.isWithdrawal

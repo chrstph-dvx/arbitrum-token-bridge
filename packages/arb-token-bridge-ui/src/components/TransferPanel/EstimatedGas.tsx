@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { twMerge } from 'tailwind-merge'
 
 import { useAppState } from '../../state'
-import { ChainId, getNetworkName, isNetwork } from '../../util/networks'
+import { ChainId, isNetwork } from '../../util/networks'
 import { Tooltip } from '../common/Tooltip'
 import { formatAmount } from '../../util/NumberUtils'
 import { useNativeCurrency } from '../../hooks/useNativeCurrency'
@@ -13,6 +13,7 @@ import { useNetworks } from '../../hooks/useNetworks'
 import { useNetworksRelationship } from '../../hooks/useNetworksRelationship'
 import { NativeCurrencyPrice, useIsBridgingEth } from './NativeCurrencyPrice'
 import { isTokenNativeUSDC } from '../../util/TokenUtils'
+import { getNetworkName } from '../../util/bridgeUiConfig'
 
 function getGasFeeTooltip(chainId: ChainId) {
   const { isEthereumMainnetOrTestnet } = isNetwork(chainId)
