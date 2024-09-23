@@ -31,14 +31,6 @@ async function run() {
       return;
     }
 
-    // Get all check runs for the current SHA
-    const { data: allCheckRuns } = await octokit.rest.checks.listForRef({
-      owner,
-      repo,
-      ref: head_sha,
-      check_name: checkName,
-    });
-
     const checkRunData = {
       owner,
       repo,
@@ -47,32 +39,20 @@ async function run() {
       status,
       conclusion: status === "completed" ? conclusion : undefined,
       output: {
-        title:
-          status === "in_progress"
-            ? "CCTP E2E Tests In Progress"
-            : "CCTP E2E Tests Result",
-        summary:
-          status === "in_progress"
-            ? "The CCTP E2E tests have been triggered and are now running."
-            : `The CCTP E2E tests have completed with status: ${conclusion}.`,
-        text:
-          status === "in_progress"
-            ? "Tests are currently in progress. Results will be updated upon completion."
-            : `For detailed information, please check the [workflow run](${detailsUrl}).`,
+        title: status === "in_progress" ? "CCTP E2E Tests In Progress" : "CCTP E2E Tests Result",
+        summary: status === "in_progress" 
+          ? "The CCTP E2E tests have been triggered and are now running."
+          : `The CCTP E2E tests have completed with status: ${conclusion}.`,
+        text: status === "in_progress"
+          ? "Tests are currently in progress. Results will be updated upon completion."
+          : `For detailed information, please check the [workflow run](${detailsUrl}).`,
       },
       details_url: detailsUrl,
     };
 
-    if (allCheckRuns[0]) {
-      // Update existing check run
-      await octokit.rest.checks.update({
-        check_run_id: allCheckRuns[0].id,
-        ...checkRunData,
-      });
-    } else {
-      // Create new check run
-      await octokit.rest.checks.create(checkRunData);
-    }
+    // Always create a new check run instead of updating an existing one
+    await octokit.rest.checks.create(checkRunData);
+
   } catch (error) {
     core.setFailed(error.message);
   }
