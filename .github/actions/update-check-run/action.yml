@@ -14,5 +14,22 @@ inputs:
     description: 'URL for more details'
     required: false
 runs:
-  using: 'node20'
-  main: 'index.js'
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    - name: Install Dependencies
+      run: npm ci
+      shell: bash
+      working-directory: ./.github/actions/update-check-run
+    - name: Run Action
+      run: node index.js
+      shell: bash
+      working-directory: ./.github/actions/update-check-run
+      env:
+        INPUT_GITHUB-TOKEN: ${{ inputs.github-token }}
+        INPUT_STATUS: ${{ inputs.status }}
+        INPUT_CONCLUSION: ${{ inputs.conclusion }}
+        INPUT_DETAILS-URL: ${{ inputs.details-url }}
